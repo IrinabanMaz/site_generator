@@ -1,0 +1,4 @@
+- **Shadow Bolt**: Hurl bolts of shadow energy to devastate enemies.  
+- **Summon Minions**: Call forth infernals, voidwalkers, or imps to aid in battle.  
+- **Curse of Agony**: Slowly drains the life of my enemies.  
+- **Soulstone Resurrection**: Prepare for the inevitable wipe.

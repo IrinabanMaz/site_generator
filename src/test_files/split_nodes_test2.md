@@ -1,0 +1,1 @@
+Reach Level **60** and obtain the *Dreadsteed*.
