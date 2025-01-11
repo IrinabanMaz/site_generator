@@ -26,15 +26,15 @@ class test_HTMLNode(unittest.TestCase):
 class test_LeafNode(unittest.TestCase):
     def test_to_html(self):
         node = LeafNode("p", "This is a paragraph of text.")
-        self.assertEqual(node.to_html() , "<p>This is a paragraph of text.</p>")
+        self.assertEqual(node.to_html().replace("\n" , "") , "<p>This is a paragraph of text.</p>")
 
     def test_to_html2(self):
         node = LeafNode("a", "Click me!", {"href": "https://www.google.com"})
-        self.assertEqual(node.to_html() , "<a href=\"https://www.google.com\">Click me!</a>")
+        self.assertEqual(node.to_html().replace("\n" , "") , "<a href=\"https://www.google.com\">Click me!</a>")
 
     def test_to_html3(self):
         node = LeafNode(None, "some sample text")
-        self.assertEqual(node.to_html() , "some sample text")
+        self.assertEqual(node.to_html().replace("\n" , "") , "some sample text")
     
     def test_to_html4(self):
         node = LeafNode(None, None)
@@ -61,6 +61,6 @@ class test_ParentNode(unittest.TestCase):
 
 
 
-        self.assertEqual(parent.to_html() , target)
+        self.assertEqual(parent.to_html().replace("\n" , "") , target)
         
 

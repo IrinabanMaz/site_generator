@@ -26,7 +26,7 @@ class TextNode:
 
 def text_node_to_html_node(text_node):
     match text_node.text_type:
-        case TextType.Normal:
+        case TextType.NORMAL:
             return LeafNode(None , text_node.text)
         case TextType.BOLD:
             return LeafNode("b" , text_node.text)
@@ -37,7 +37,7 @@ def text_node_to_html_node(text_node):
         case TextType.LINK:
             return LeafNode("a" , text_node.text , {"href" : text_node.url})
         case TextType.IMAGE:
-            return LeafNode("img"  ,None , {"src" : text_node.url , "alt" : text_node.text})
+            return LeafNode("img"  ,text_node.text , {"src" : text_node.url , "alt" : text_node.text})
 
 
 def split_nodes_delimiter(text_nodes , delimiter , text_type):
@@ -73,15 +73,16 @@ def extract_markdown_images(text):
     return node_data
 
 def extract_markdown_links(text):
-    link_re = r"[^!]\[.*\]\(.*\)(?!\[)"
+    link_re = r"[^!]*\[.*\]\(.*\)(?!\)\[)"
 
     matches = re.findall(link_re , text)
 
     node_data = []
 
     for match in matches:
+        idxmin = match.find("[")
         idx = match.find("]")
-        alt = match[2:idx]
+        alt = match[idxmin+ 1 :idx]
         url = match[idx+2:-1]
         node_data.append((alt , url))
     
@@ -119,6 +120,7 @@ def split_node_link(text_nodes):
             for i , link in enumerate(links):
                 current_match = f"[{link[0]}]({link[1]})"
                 min_idx = node.text.find(current_match)
+                
                 split_nodes.append(TextNode(node.text[last_idx:min_idx] , TextType.NORMAL))
                 split_nodes.append(TextNode(link[0] , TextType.LINK , link[1]))
                 last_idx = min_idx + len(current_match)
@@ -136,6 +138,6 @@ def text_to_textnodes(text):
     link_nodes = split_node_link(image_nodes)
     bold_nodes = split_nodes_delimiter(link_nodes , "**" , TextType.BOLD)
     italic_nodes = split_nodes_delimiter(bold_nodes , "*" , TextType.ITALIC)
-    final_nodes = split_nodes_delimiter(italic_nodes , "```" , TextType.CODE)
+    final_nodes = split_nodes_delimiter(italic_nodes , "`" , TextType.CODE)
 
     return final_nodes
