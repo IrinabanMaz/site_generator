@@ -19,11 +19,11 @@ def generate_page(from_path , template_path , dest_path):
 
 def convert_dir(source = None , target = None):
     if source == None:
-        src_directory = "content/"
+        src_directory = os.path.relpath("content")
     else:
         src_directory = source
     if target == None:
-        tar_directory = "public/"
+        tar_directory = os.path.relpath("public")
     else:
         tar_directory = target
 
@@ -31,12 +31,12 @@ def convert_dir(source = None , target = None):
         os.mkdir(tar_directory)
 
     for item in os.listdir(src_directory):
-        if os.path.isfile(src_directory + item):
+        if os.path.isfile(os.path.join(src_directory ,item)):
             (head , tail) = os.path.splitext(item)
             if tail == ".md":
-                generate_page(src_directory + item , "template.html" , tar_directory + head + ".html")
+                generate_page(os.path.join(src_directory , item) , "template.html" , os.path.join(tar_directory, head + ".html"))
             else:
-                shutil.copy(src_directory + item , tar_directory + item)
+                shutil.copy(os.path.join(src_directory , item) , os.path.join(tar_directory , item))
         else:
-            convert_dir(src_directory + item +"/", tar_directory + item + "/")
+            convert_dir(os.path.join(src_directory, item), os.path.join(tar_directory , item))
         
